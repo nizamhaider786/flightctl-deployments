@@ -113,7 +113,7 @@ keycloak:
 api:
   enabled: true
   image:
-    image: 10.200.170.11:5000/flightctl-api
+    image: 10.200.170.11:5000/flightctl/flightctl-api
     pullPolicy: Always
     tag: "v1.2.0-main-183-g8992db6d"
   baseUIUrl: ""
@@ -135,7 +135,7 @@ api:
 cliArtifacts:
   enabled: true
   image:
-    image: 10.200.170.11:5000/flightctl-cli-artifacts
+    image: 10.200.170.11:5000/flightctl/flightctl-cli-artifacts
     pullPolicy: Always
     tag: "v1.2.0-main-183-g8992db6d"
 
@@ -143,7 +143,7 @@ cliArtifacts:
 worker:
   enabled: true
   image:
-    image: 10.200.170.11:5000/flightctl-worker
+    image: 10.200.170.11:5000/flightctl/flightctl-worker
     pullPolicy: Always
     tag: "v1.2.0-main-183-g8992db6d"
   enableSecretsClusterRoleBinding: true
@@ -152,7 +152,7 @@ worker:
 periodic:
   enabled: true
   image:
-    image: 10.200.170.11:5000/flightctl-periodic
+    image: 10.200.170.11:5000/flightctl/flightctl-periodic
     tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
   consumers: 5
@@ -161,7 +161,7 @@ periodic:
 alertExporter:
   enabled: true
   image:
-    image: 10.200.170.11:5000/flightctl-alert-exporter
+    image: 10.200.170.11:5000/flightctl/flightctl-alert-exporter
     tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
 
@@ -169,7 +169,7 @@ alertExporter:
 alertmanagerProxy:
   enabled: true
   image:
-    image: 10.200.170.11:5000/flightctl-alertmanager-proxy
+    image: 10.200.170.11:5000/flightctl/flightctl-alertmanager-proxy
     tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
 
@@ -193,7 +193,7 @@ secretsJob:
 # -- Database Setup Configuration
 dbSetup:
   image:
-    image: 10.200.170.11:5000/flightctl-db-setup
+    image: 10.200.170.11:5000/flightctl/flightctl-db-setup
     tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
   wait:
