@@ -1,0 +1,218 @@
+# -- Global parameters
+global:
+  target: "standalone"
+  baseDomain: ""
+  baseDomainTls:
+    cert: ""
+    key: ""
+  imagePullSecretName: ""
+  apiUrl: ""
+  auth:
+    type: "builtin"
+    caCert: ""
+    insecureSkipTlsVerify: false
+    k8s:
+      apiUrl: https://kubernetes.default.svc
+      externalOpenShiftApiUrl: ""
+      externalApiToken: ""
+      rbacNs: ""
+    oidc:
+      oidcAuthority: http://keycloak:8081/realms/flightctl
+      externalOidcAuthority: ""
+    aap:
+      apiUrl: ""
+      externalApiUrl: ""
+  metrics:
+    enabled: true
+  tracing:
+    enabled: false
+    endpoint: jaeger-collector.flightctl-e2e.svc.cluster.local:4318
+    insecure: true
+  internalNamespace: ""
+  clusterLevelSecretAccess: false
+  appCode: ""
+  exposeServicesMethod: "route"
+  gatewayClass: ""
+  nodePorts:
+    api: 30000
+    cliArtifacts: 30010
+    agent: 30020
+    ui: 30030
+    keycloak: 30040
+    alertmanagerProxy: 30050
+    telemetryGatewayOtlp: 30060
+    telemetryGatewayProm: 30070
+  gatewayPorts:
+    tls: 443
+    http: 80
+  imagePullPolicy: Always
+  rbac:
+    create: true
+  organizations:
+    enabled: false
+  sshKnownHosts:
+    data: ""
+
+# -- Component specific parameters
+
+# -- Database Configuration
+db:
+  external: "disabled"
+  port: 5432
+  name: "flightctl"
+  type: "pgsql"
+  sslmode: ""
+  sslConfigMap: ""
+  sslSecret: ""
+  image:
+    image: 10.200.170.11:5000/postgresql-16-c9s
+    tag: "20250214"
+    pullPolicy: Always
+  masterUser: admin
+  user: flightctl_app
+  migrationUser: flightctl_migrator
+  masterPassword: ""
+  userPassword: ""
+  migrationPassword: ""
+  maxConnections: 200
+  storage:
+    size: "60Gi"
+  resources:
+    requests:
+      cpu: "512m"
+      memory: "512Mi"
+  fsGroup: ""
+
+# -- Key-Value Store Configuration
+kv:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/redis-7-c9s
+    tag: "20250108"
+    pullPolicy: Always
+  password: ""
+  loglevel: warning
+  fsGroup: ""
+  maxmemory: "1gb"
+  maxmemoryPolicy: "allkeys-lru"
+
+# -- Alertmanager Configuration
+alertmanager:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/alertmanager
+    tag: "v0.28.1"
+    pullPolicy: Always
+
+# -- Keycloak Configuration
+keycloak:
+  db:
+    fsGroup: ""
+
+# -- API Server Configuration
+api:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/flightctl-api
+    pullPolicy: Always
+    tag: "BACKEND_TAG_PLACEHOLDER"
+  baseUIUrl: ""
+  rateLimit:
+    requests: 60
+    window: "1m"
+    authRequests: 10
+    authWindow: "1h"
+    trustedProxies:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+  probes:
+    enabled: true
+    readinessPath: /readyz
+    livenessPath: /healthz
+
+# -- CLI Artifacts Configuration
+cliArtifacts:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/flightctl-cli-artifacts
+    pullPolicy: Always
+    tag: "BACKEND_TAG_PLACEHOLDER"
+
+# -- Worker Configuration
+worker:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/flightctl-worker
+    pullPolicy: Always
+    tag: "BACKEND_TAG_PLACEHOLDER"
+  enableSecretsClusterRoleBinding: true
+
+# -- Periodic Configuration
+periodic:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/flightctl-periodic
+    tag: "BACKEND_TAG_PLACEHOLDER"
+    pullPolicy: Always
+  consumers: 5
+
+# -- Alert Exporter Configuration
+alertExporter:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/flightctl-alert-exporter
+    tag: "BACKEND_TAG_PLACEHOLDER"
+    pullPolicy: Always
+
+# -- Alertmanager Proxy Configuration
+alertmanagerProxy:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/flightctl-alertmanager-proxy
+    tag: "BACKEND_TAG_PLACEHOLDER"
+    pullPolicy: Always
+
+# -- Prometheus Configuration
+prometheus:
+  enabled: false
+
+# -- UI Configuration (Disabled so it doesn't conflict with your flightctl-ui.yaml)
+ui:
+  enabled: false
+  api:
+    insecureSkipTlsVerify: true
+
+# -- Secrets job configuration
+secretsJob:
+  image:
+    image: 10.200.170.11:5000/origin-cli
+    tag: "4.20.0"
+    pullPolicy: Always
+
+# -- Database Setup Configuration
+dbSetup:
+  image:
+    image: 10.200.170.11:5000/flightctl-db-setup
+    tag: "BACKEND_TAG_PLACEHOLDER"
+    pullPolicy: Always
+  wait:
+    timeout: 60
+    sleep: 2
+  migration:
+    backoffLimit: 2147483647
+    activeDeadlineSeconds: 0
+
+# -- Upgrade hooks
+upgradeHooks:
+  scaleDown:
+    condition: chart
+    deployments:
+      - flightctl-periodic
+      - flightctl-worker
+    timeoutSeconds: 120
+  databaseMigrationDryRun: true
+
+# -- Telemetry Gateway Configuration
+telemetryGateway:
+  enabled: false
