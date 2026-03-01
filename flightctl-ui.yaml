@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: flightctl-ui
-          image: 10.200.170.11:5000/flightctl-ui:UI_TAG_PLACEHOLDER
+          image: 10.200.170.11:5000/flightctl-ui:v1.1.0-rc1-40-ge62e7bd53
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
