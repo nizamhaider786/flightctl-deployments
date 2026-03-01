@@ -5,7 +5,7 @@ global:
   multiclusterEngineNamespace: "multicluster-engine"
   generateCertificates: "auto"
   internalNamespace: ""
-  baseDomain: ""
+  baseDomain: "flightctl.local"
   baseDomainTlsSecretName: ""
   storageClassName: ""
   imagePullSecretName: ""
