@@ -10,7 +10,8 @@ spec:
     spec:
       containers:
       - name: curl-jenkins
-        image: 10.200.170.11:5000/flightctl-api:latest 
+        # Replaced ':latest' with our placeholder
+        image: 10.200.170.11:5000/flightctl-api:BACKEND_TAG_PLACEHOLDER
         command:
           - "/bin/sh"
           - "-c"
