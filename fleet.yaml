@@ -1,0 +1,12 @@
+defaultNamespace: flightctl-dev
+targetCustomizations:
+  - name: dev-environment
+    namespace: flightctl-dev
+    clusterSelector:
+      matchLabels:
+        fleet.cattle.io/cluster: local
+  - name: qa-environment
+    namespace: flightctl-qa
+    clusterSelector:
+      matchLabels:
+        fleet.cattle.io/cluster: local
