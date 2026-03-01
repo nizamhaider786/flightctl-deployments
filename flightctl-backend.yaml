@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: flightctl-api
-          image: 10.200.170.11:5000/flightctl-api:BACKEND_TAG_PLACEHOLDER
+          image: 10.200.170.11:5000/flightctl-api:v1.2.0-main-183-g8992db6d
           imagePullPolicy: Always
           ports:
             - containerPort: 3443
