@@ -20,11 +20,3 @@ targetCustomizations:
     clusterSelector:
       matchLabels:
         fleet.cattle.io/cluster: local
-    helm:
-      values:
-        # We shift all the QA ports up by 1 so they don't collide with Dev!
-        nodePorts:
-          api: 30001
-          cliArtifacts: 30011
-          agent: 30021
-          ui: 30031
