@@ -115,7 +115,7 @@ api:
   image:
     image: 10.200.170.11:5000/flightctl-api
     pullPolicy: Always
-    tag: "BACKEND_TAG_PLACEHOLDER"
+    tag: "v1.2.0-main-183-g8992db6d"
   baseUIUrl: ""
   rateLimit:
     requests: 60
@@ -137,7 +137,7 @@ cliArtifacts:
   image:
     image: 10.200.170.11:5000/flightctl-cli-artifacts
     pullPolicy: Always
-    tag: "BACKEND_TAG_PLACEHOLDER"
+    tag: "v1.2.0-main-183-g8992db6d"
 
 # -- Worker Configuration
 worker:
@@ -145,7 +145,7 @@ worker:
   image:
     image: 10.200.170.11:5000/flightctl-worker
     pullPolicy: Always
-    tag: "BACKEND_TAG_PLACEHOLDER"
+    tag: "v1.2.0-main-183-g8992db6d"
   enableSecretsClusterRoleBinding: true
 
 # -- Periodic Configuration
@@ -153,7 +153,7 @@ periodic:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl-periodic
-    tag: "BACKEND_TAG_PLACEHOLDER"
+    tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
   consumers: 5
 
@@ -162,7 +162,7 @@ alertExporter:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl-alert-exporter
-    tag: "BACKEND_TAG_PLACEHOLDER"
+    tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
 
 # -- Alertmanager Proxy Configuration
@@ -170,7 +170,7 @@ alertmanagerProxy:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl-alertmanager-proxy
-    tag: "BACKEND_TAG_PLACEHOLDER"
+    tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
 
 # -- Prometheus Configuration
@@ -194,7 +194,7 @@ secretsJob:
 dbSetup:
   image:
     image: 10.200.170.11:5000/flightctl-db-setup
-    tag: "BACKEND_TAG_PLACEHOLDER"
+    tag: "v1.2.0-main-183-g8992db6d"
     pullPolicy: Always
   wait:
     timeout: 60
