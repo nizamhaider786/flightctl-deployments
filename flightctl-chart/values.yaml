@@ -1,96 +1,100 @@
 # -- Global parameters
 global:
-  target: "standalone"
+  enableOpenShiftExtensions: "auto"
+  enableMulticlusterExtensions: "auto"
+  multiclusterEngineNamespace: "multicluster-engine"
+  generateCertificates: "auto"
+  internalNamespace: ""
   baseDomain: ""
-  baseDomainTls:
-    cert: ""
-    key: ""
+  baseDomainTlsSecretName: ""
+  storageClassName: ""
   imagePullSecretName: ""
-  apiUrl: ""
+  imagePullPolicy: Always
   auth:
-    type: "builtin"
+    type: "" 
     caCert: ""
     insecureSkipTlsVerify: false
     k8s:
       apiUrl: https://kubernetes.default.svc
-      externalOpenShiftApiUrl: ""
-      externalApiToken: ""
+      externalApiTokenSecretName: ""
       rbacNs: ""
+      createAdminUser: true
     oidc:
-      oidcAuthority: http://keycloak:8081/realms/flightctl
+      clientId: "flightctl-client"
+      issuer: ""
       externalOidcAuthority: ""
+      organizationAssignment:
+        type: "static"
+        organizationName: "default"
+      usernameClaim:
+        - "preferred_username"
+      roleAssignment:
+        type: "dynamic"
+        claimPath:
+          - "groups"
     aap:
       apiUrl: ""
       externalApiUrl: ""
-  metrics:
-    enabled: true
-  tracing:
-    enabled: false
-    endpoint: jaeger-collector.flightctl-e2e.svc.cluster.local:4318
-    insecure: true
-  internalNamespace: ""
-  clusterLevelSecretAccess: false
-  appCode: ""
-  exposeServicesMethod: "route"
-  gatewayClass: ""
-  nodePorts:
-    api: 30000
-    cliArtifacts: 30010
-    agent: 30020
-    ui: 30030
-    keycloak: 30040
-    alertmanagerProxy: 30050
-    telemetryGatewayOtlp: 30060
-    telemetryGatewayProm: 30070
-  gatewayPorts:
-    tls: 443
-    http: 80
-  imagePullPolicy: Always
-  rbac:
-    create: true
-  organizations:
-    enabled: false
+    openshift:
+      createAdminUser: true
+      clusterControlPlaneUrl: "https://kubernetes.default.svc"
+      externalApiTokenSecretName: ""
+      clientId: ""
+      clientSecret: ""
+      authorizationUrl: ""
+      tokenUrl: ""
+      issuer: ""
+      projectLabelFilter: ""
+  exposeServicesMethod: "auto"
+  gateway:
+    gatewayClassName: ""
+    ports:
+      tls: 443
+      http: 80
   sshKnownHosts:
     data: ""
+  additionalRouteLabels: null
+  additionalPVCLabels: null
 
 # -- Component specific parameters
 
 # -- Database Configuration
 db:
-  external: "disabled"
-  port: 5432
+  type: "builtin"
   name: "flightctl"
-  type: "pgsql"
-  sslmode: ""
-  sslConfigMap: ""
-  sslSecret: ""
-  image:
-    image: 10.200.170.11:5000/postgresql-16-c9s
-    tag: "20250214"
-    pullPolicy: Always
-  masterUser: admin
-  user: flightctl_app
-  migrationUser: flightctl_migrator
-  masterPassword: ""
-  userPassword: ""
-  migrationPassword: ""
-  maxConnections: 200
-  storage:
-    size: "60Gi"
-  resources:
-    requests:
-      cpu: "512m"
-      memory: "512Mi"
-  fsGroup: ""
+  builtin:
+    applicationUserSecretName: ""
+    migrationUserSecretName: ""
+    masterUserSecretName: ""
+    image:
+      image: 10.200.170.11:5000/postgresql-16-c9s
+      tag: "20250214"
+      pullPolicy: Always
+    maxConnections: 200
+    storage:
+      size: "60Gi"
+    resources:
+      requests:
+        cpu: "512m"
+        memory: "512Mi" 
+    fsGroup: ""
+    additionalPVCLabels: null
+  external:
+    hostname: ""
+    port: 5432
+    applicationUserSecretName: ""
+    migrationUserSecretName: ""
+    sslmode: ""
+    tlsConfigMapName: ""
+    tlsSecretName: ""
 
 # -- Key-Value Store Configuration
 kv:
-  enabled: true
   image:
     image: 10.200.170.11:5000/redis-7-c9s
     tag: "20250108"
     pullPolicy: Always
-  password: ""
+  passwordSecretName: ""
   loglevel: warning
   fsGroup: ""
   maxmemory: "1gb"
@@ -103,57 +107,50 @@ alertmanager:
     image: 10.200.170.11:5000/alertmanager
     tag: "v0.28.1"
     pullPolicy: Always
-
-# -- Keycloak Configuration
-keycloak:
-  db:
-    fsGroup: ""
+  additionalRouteLabels: null
+  additionalPVCLabels: null
 
 # -- API Server Configuration
 api:
-  enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-api
+    tag: "BACKEND_TAG_PLACEHOLDER"
     pullPolicy: Always
-    tag: "v1.2.0-main-183-g8992db6d"
-  baseUIUrl: ""
   rateLimit:
-    requests: 60
+    enabled: true
+    requests: 300
     window: "1m"
-    authRequests: 10
+    authRequests: 20
     authWindow: "1h"
     trustedProxies:
-      - "10.0.0.0/8"
-      - "172.16.0.0/12"
-      - "192.168.0.0/16"
-  probes:
-    enabled: true
-    readinessPath: /readyz
-    livenessPath: /healthz
+      - "10.0.0.0/8"   
+      - "172.16.0.0/12" 
+      - "192.168.0.0/16" 
+  additionalRouteLabels: null
+  additionalPVCLabels: null
 
 # -- CLI Artifacts Configuration
 cliArtifacts:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-cli-artifacts
+    tag: "BACKEND_TAG_PLACEHOLDER"
     pullPolicy: Always
-    tag: "v1.2.0-main-183-g8992db6d"
+  additionalRouteLabels: null
 
 # -- Worker Configuration
 worker:
-  enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-worker
+    tag: "BACKEND_TAG_PLACEHOLDER"
     pullPolicy: Always
-    tag: "v1.2.0-main-183-g8992db6d"
-  enableSecretsClusterRoleBinding: true
+  clusterLevelSecretAccess: false
 
 # -- Periodic Configuration
 periodic:
-  enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-periodic
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "BACKEND_TAG_PLACEHOLDER"
     pullPolicy: Always
   consumers: 5
 
@@ -162,7 +159,7 @@ alertExporter:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-alert-exporter
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "BACKEND_TAG_PLACEHOLDER"
     pullPolicy: Always
 
 # -- Alertmanager Proxy Configuration
@@ -170,21 +167,56 @@ alertmanagerProxy:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-alertmanager-proxy
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "BACKEND_TAG_PLACEHOLDER"
+    pullPolicy: Always
+  
+# -- ImageBuilder API Configuration
+imageBuilderApi:
+  enabled: true
+  image:
+    image: 10.200.170.11:5000/flightctl/flightctl-imagebuilder-api
+    tag: "BACKEND_TAG_PLACEHOLDER"
     pullPolicy: Always
 
-# -- Prometheus Configuration
-prometheus:
-  enabled: false
+# -- ImageBuilder Worker Configuration
+imageBuilderWorker:
+  enabled: true
+  replicas: 1
+  image:
+    image: 10.200.170.11:5000/flightctl/flightctl-imagebuilder-worker
+    tag: "BACKEND_TAG_PLACEHOLDER"
+    pullPolicy: Always
+  logLevel: info
+  maxConcurrentBuilds: 2
+  defaultTTL: 168h
+  privileged: true
+  yumReposSecretName: ""
+  rhsmSecretName: ""
+  rhsmCaSecretName: ""
+  resources: {}
 
-# -- UI Configuration (Disabled so it doesn't conflict with your flightctl-ui.yaml)
+telemetryGateway:
+  image:
+    image: 10.200.170.11:5000/flightctl/flightctl-telemetry-gateway
+    tag: "BACKEND_TAG_PLACEHOLDER"
+    pullPolicy: Always
+  additionalRouteLabels: null
+
+# -- UI Configuration (Disabled)
 ui:
   enabled: false
-  api:
-    insecureSkipTlsVerify: true
+  image:
+    image: 10.200.170.11:5000/flightctl/flightctl-ui
+    pluginImage: quay.io/flightctl/flightctl-ocp-ui
+    tag: ""
+    pullPolicy: Always
+  auth:
+    insecureSkipTlsVerify: false
+    caCert: ""
+  additionalRouteLabels: null
 
-# -- Secrets job configuration
-secretsJob:
+# -- Cluster CLI Configuration
+clusterCli:
   image:
     image: 10.200.170.11:5000/origin-cli
     tag: "4.20.0"
@@ -212,7 +244,3 @@ upgradeHooks:
       - flightctl-worker
     timeoutSeconds: 120
   databaseMigrationDryRun: true
-
-# -- Telemetry Gateway Configuration
-telemetryGateway:
-  enabled: false
