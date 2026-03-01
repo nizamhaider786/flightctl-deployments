@@ -45,7 +45,7 @@ global:
       tokenUrl: ""
       issuer: ""
       projectLabelFilter: ""
-  exposeServicesMethod: "auto"
+  exposeServicesMethod: "none"
   gateway:
     gatewayClassName: ""
     ports:
