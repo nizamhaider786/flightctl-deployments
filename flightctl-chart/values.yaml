@@ -112,7 +112,6 @@ alertmanager:
 
 # -- API Server Configuration
 api:
-  baseUIUrl: "http://flightctl.local"
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-api
     tag: "v1.2.0-main-184-g3aa428ca"
