@@ -11,7 +11,7 @@ spec:
       containers:
       - name: curl-jenkins
         # Replaced ':latest' with our placeholder
-        image: 10.200.170.11:5000/flightctl/flightctl-api:v1.2.0-main-183-g8992db6d
+        image: 10.200.170.11:5000/flightctl/flightctl-api:v1.2.0-main-184-g3aa428ca
         command:
           - "/bin/sh"
           - "-c"

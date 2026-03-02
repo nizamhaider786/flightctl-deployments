@@ -114,7 +114,7 @@ alertmanager:
 api:
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-api
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   rateLimit:
     enabled: true
@@ -134,7 +134,7 @@ cliArtifacts:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-cli-artifacts
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   additionalRouteLabels: null
 
@@ -142,7 +142,7 @@ cliArtifacts:
 worker:
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-worker
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   clusterLevelSecretAccess: false
 
@@ -150,7 +150,7 @@ worker:
 periodic:
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-periodic
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   consumers: 5
 
@@ -159,7 +159,7 @@ alertExporter:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-alert-exporter
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
 
 # -- Alertmanager Proxy Configuration
@@ -167,7 +167,7 @@ alertmanagerProxy:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-alertmanager-proxy
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   
 # -- ImageBuilder API Configuration
@@ -175,7 +175,7 @@ imageBuilderApi:
   enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-imagebuilder-api
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
 
 # -- ImageBuilder Worker Configuration
@@ -184,7 +184,7 @@ imageBuilderWorker:
   replicas: 1
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-imagebuilder-worker
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   logLevel: info
   maxConcurrentBuilds: 2
@@ -198,7 +198,7 @@ imageBuilderWorker:
 telemetryGateway:
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-telemetry-gateway
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   additionalRouteLabels: null
 
@@ -226,7 +226,7 @@ clusterCli:
 dbSetup:
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-db-setup
-    tag: "v1.2.0-main-183-g8992db6d"
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   wait:
     timeout: 60
