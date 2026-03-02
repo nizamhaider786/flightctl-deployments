@@ -1,0 +1,35 @@
+# 1. Transport Config: Tell Traefik to trust the internal API cert
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: api-transport
+  namespace: flightctl-dev
+spec:
+  insecureSkipVerify: true
+
+---
+# 2. The Route: Map the traffic correctly
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: flightctl-ingress
+  namespace: flightctl-dev
+spec:
+  entryPoints:
+    - web
+  routes:
+    # Send /api/ traffic to the backend API using HTTPS
+    - match: Host(`flightctl.local`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: flightctl-api
+          port: 3443
+          scheme: https
+          serversTransport: api-transport
+          
+    # Send everything else to the frontend UI using standard HTTP
+    - match: Host(`flightctl.local`)
+      kind: Rule
+      services:
+        - name: flightctl-ui
+          port: 80
