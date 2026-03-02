@@ -112,6 +112,7 @@ alertmanager:
 
 # -- API Server Configuration
 api:
+  baseUIUrl: "http://flightctl.local"
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-api
     tag: "v1.2.0-main-184-g3aa428ca"
@@ -204,11 +205,11 @@ telemetryGateway:
 
 # -- UI Configuration (Disabled)
 ui:
-  enabled: false
+  enabled: true
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-ui
     pluginImage: quay.io/flightctl/flightctl-ocp-ui
-    tag: ""
+    tag: "v1.2.0-main-184-g3aa428ca"
     pullPolicy: Always
   auth:
     insecureSkipTlsVerify: false
