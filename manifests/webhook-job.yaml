@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fleet-success-callback
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: curl-jenkins
+        # Replaced ':latest' with our placeholder
+        image: 10.200.170.11:5000/flightctl/flightctl-api:v1.2.0-main-183-g8992db6d
+        command:
+          - "/bin/sh"
+          - "-c"
+          - "curl -X POST http://jenkins.jenkins.svc.cluster.local:8080/generic-webhook-trigger/invoke?token=flightctl-deployed"
+      restartPolicy: Never
