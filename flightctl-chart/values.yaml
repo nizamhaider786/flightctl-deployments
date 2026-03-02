@@ -11,7 +11,7 @@ global:
   imagePullSecretName: ""
   imagePullPolicy: Always
   auth:
-    type: "none" 
+    type: "k8s" 
     caCert: ""
     insecureSkipTlsVerify: false
     k8s:
