@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flightctl-ingress
+  namespace: flightctl-dev
+spec:
+  rules:
+  - host: flightctl.local
+    http:
+      paths:
+      # 1. Send all /api/ traffic to the backend API pod
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: flightctl-api
+            port:
+              number: 3443
+      
+      # 2. Send everything else to the frontend UI pod
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flightctl-ui
+            port:
+              number: 80
