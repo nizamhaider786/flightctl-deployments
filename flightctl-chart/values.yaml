@@ -204,7 +204,7 @@ telemetryGateway:
 
 # -- UI Configuration (Disabled)
 ui:
-  enabled: true
+  enabled: false
   image:
     image: 10.200.170.11:5000/flightctl/flightctl-ui
     pluginImage: quay.io/flightctl/flightctl-ocp-ui
